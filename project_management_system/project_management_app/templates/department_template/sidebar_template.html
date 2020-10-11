@@ -1,0 +1,104 @@
+{% load static %}
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="" class="brand-link">
+      <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text font-weight-light">AdminLTE 3</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{% static 'dist/img/app.jpg' %}" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="{% url 'department_profile' %}" class="d-block">{{ user.first_name }}</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item">
+            {% url 'department_home' as department_home %}
+            <a href="{{ department_home }}" class="nav-link {% if request.path == department_home %} active {% endif %}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Home
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            {% url 'employee_add_project' as employee_add_project %}
+            <a href="{{ employee_add_project }}" class="nav-link {% if request.path == employee_add_project %} active {% endif %}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Add Project
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            {% url 'admin_view_project' as admin_view_project %}
+            <a href="{{ admin_view_project }}" class="nav-link {% if request.path == admin_view_project %} active {% endif %}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                View Project
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            {% url 'department_take_attendance' as department_take_attendance %}
+            <a href="{{ department_take_attendance }}" class="nav-link {% if request.path == department_take_attendance %} active {% endif %}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Take Attendance
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            {% url 'department_update_attendance' as department_update_attendance %}
+            <a href="{{ department_update_attendance }}" class="nav-link {% if request.path == department_update_attendance %} active {% endif %}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                View Update Attendance
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            {% url 'department_apply_leave' as department_apply_leave %}
+            <a href="{{ department_apply_leave }}" class="nav-link {% if request.path == department_apply_leave %} active {% endif %}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Apply Leave
+              </p>
+            </a>
+          </li>
+          <!-- <li class="nav-item">
+            {% url 'department_feedback' as department_feedback %}
+            <a href="{{ department_feedback }}" class="nav-link {% if request.path == department_feedback %} active {% endif %}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                FeedBack
+              </p>
+            </a>
+          </li> -->
+          <li class="nav-item">
+            {% url 'department_comment_sent' as department_comment_sent %}
+            <a href="{{ department_comment_sent }}" class="nav-link {% if request.path == department_comment_sent %} active {% endif %}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                FeedBack
+              </p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>

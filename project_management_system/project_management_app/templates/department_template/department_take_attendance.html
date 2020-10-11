@@ -1,0 +1,207 @@
+{% extends 'department_template/base_template.html' %}
+{% block page_title %}
+Take Attendance
+{% endblock page_title %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Take Attendance</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              
+                <div class="card-body">
+                 
+                  <div class="form-group">
+                    <label>Project</label>
+                    <select  class="form-control" name="project" id="project" required>
+                        {% for project in projects %}
+                        <option value="{{ project.id }}">{{ project.project_name }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Session Year</label>
+                    <select  class="form-control" name="session_year"  id="session_year" required>
+                        {% for session_year in session_year %}
+                        <option value="{{ session_year.id }}">{{ session_year.session_start_year }} TO {{ session_year.session_start_year }}</option>
+                        {% endfor %}
+                    </select>
+                    </div>
+                    
+                <div class="form-group">
+                    {% if messages %}
+                      {% for message in messages %}
+                      {% if message.tags == 'error' %}
+                      <div class="alert alert-danger" style="margin-top:10px;">{{message}}</div>
+                      {% endif %}
+                      {% if message.tags == 'success' %}
+                      <div class="alert alert-success" style="margin-top:10px;">{{message}}</div>
+                      {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                  </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="button" class="btn btn-primary btn-block" id="fetch_employee">Fetch Employee</button>
+                </div>
+                <div id="employee_data" class="card-footer">
+
+                </div>
+             
+            </div>
+            <!-- /.card -->
+
+           
+    </div>
+  </section>
+  <!-- /.content -->
+  <!-- Modal -->
+  <!-- <div class="modal fade" id="reply_modal" role="dialog">
+    <div class="modal-dialog">
+    
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Attendance</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="reply_id" name="reply_id">
+          <p>Absent List <span id="reply_name"></span></p>
+          <div id="result"></div>
+          <button id='save_attendance' class="btn btn-info btn-block">Save</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div> -->
+<!-- /.content -->
+{% endblock main_content %}
+{% block custom_js %}
+<script>
+  $(document).ready(function(){
+    $("#fetch_employee").click(function(){
+      var project=$("#project").val()
+      var session_year=$("#session_year").val()
+
+      $.ajax({
+        url:"{% url 'get_employees' %}",
+        type:'POST',
+        data:{project:project,session_year:session_year},
+      })
+      .done(function(response){
+        var json_data=JSON.parse(response);
+        console.log(json_data)
+        // var field = document.querySelector('#attendence_date');
+        // var date = new Date();
+        // // document.getElementById('attendence_date').innerHTML = date;
+        // // $("#attendence_date").html(date);
+        // console.log(date);
+        
+        var div_data="<div class='form-group'><label>Attendance Date :</label><input type='date.now()' name='attendence_date' id='attendence_date' class='form-control'  value={{ d1 }} </div>";
+        
+        div_data+="<div class='form-group><div class='row'>";
+      
+        for (key in json_data)
+        {
+          div_data+="<div class='col-lg-2'><div class='form-check'><input type='checkbox' checked='checked' class='attendance_confirm' name='employee_data[]' data-fg='"+json_data[key]['name']+"' value='"+ json_data[key]['id'] +"' />  <label class='form-check-label'>"+ json_data[key]['name']+" </label></div></div> ";
+        }
+        div_data+="</div></div>";
+        div_data+="<div class='form-group'> ";
+        div_data+="<button  data-toggle='modal' id='save_attendance' data-target='#reply_modal' class='btn btn-success btn-block' type='button'>Save Attendance Data</button> ";
+        div_data+="</div> ";
+    
+
+        $("#employee_data").html(div_data);
+      })
+      .fail(function(){
+        alert("Error in Fetching Employee")
+      })
+      $(document).on("click","#save_attendance",function(){
+
+        $(this).attr("disabled","disabled")
+        $(this).text("Saving Attendence Data..")
+
+        var employee_data=$("input[name='employee_data[]']").map(function(){ 
+          if($(this).is(":checked")){
+            return {"id": $(this).val(),"status":1};
+          } 
+          else{
+            return {"id": $(this).val(),"status":0};
+          }
+        }).get()
+
+        // confirm_attendance();
+
+        var attendence_date=$("#attendence_date").val();
+        var project_id=$("#project").val();
+        var session_year_id=$("#session_year").val();
+        console.log(employee_data)
+        employee_data=JSON.stringify(employee_data)
+
+       
+
+        $.ajax({
+          url:"{% url 'save_attendance_data' %}",
+          type:'POST',
+          data:{employee_ids:employee_data,attendence_date:attendence_date,project_id:project_id,session_year_id:session_year_id},
+        })
+        .done(function(response){
+
+          if (response=="OK"){
+            alert("Attendance Save")
+          }
+          else{
+            alert("Error in Saving Data")
+          }
+          location.reload()
+        })
+        .fail(function(){
+          alert("Error in Saving Employee")
+        })
+      })
+    })
+    // function confirm_attendance(){
+    //   array_confirm = []
+    //   const btn = document.querySelectorAll(".attendance_confirm");
+    //   btn.forEach(data=>{
+        
+    //     if($(data).prop("checked") == true){
+
+    //     }
+    //     else if($(data).prop("checked") == false){
+    //       const data1 = data.dataset.fg
+
+    //       array_confirm.push(data1)
+    //     }
+    //   })
+    //   if(array_confirm.length == 0){
+        
+    //   }
+    //   else{
+    //     var isValid=confirm("Absentees List : " +array_confirm)
+    //     if (!isValid){
+    //       event.preventDefault();
+    //       // alert("It Wont delete");
+    //     }
+    //       // console.log("Saved to the database");
+    //     }
+    // }
+    
+  })
+</script>
+<script>
+  
+document.querySelector("#attendence_date").valueAsDate = new Date();
+</script>
+{% endblock custom_js %}

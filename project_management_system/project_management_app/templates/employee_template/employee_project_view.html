@@ -1,0 +1,60 @@
+{% extends 'employee_template/base_template.html' %}
+{% block page_title %}
+View Project
+{% endblock page_title %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <!-- general form elements -->
+           
+            <!-- /.card -->
+            <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">View Project</h3>
+                </div>
+
+                <div class="table">
+                <table class="table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Project</th>
+                        <th>Project Details</th>
+                        <th>Files</th>
+                        <th>Status</th>
+                    </tr>
+                    {%  for project in list %}
+                    {% for project in project %}
+                    
+                    <tr>
+                        <td>{{ project.id }}</td>
+                        <td>{{ project.empproject_id.projects_id.project_name }}</td>
+                        <td>{{ project.empproject_id.project_details }}</td>
+                        <td>
+                            <a href="{{ project.image.url }}">View File</a></td>
+                            <!-- {{ project.image.url }} -->
+                        <td>
+                        {% if project.empproject_id.project_status == 0 %}
+                             <a href="{% url 'employee_compleate_project' projects_id=project.empproject_id.id  %}" class="btn btn-success ">Compleate</button>
+                             <a href="{% url 'employee_incompleate_project' projects_id=project.empproject_id.id %}" class="btn btn-danger ">Incompleate</button>
+                             {% elif project.empproject_id.project_status == 1 %}
+                             <button class="btn btn-success " disabled="disabled" data-toggle="modal" data-target="#reply_modal">Compleated</button>
+                             {% else %}
+                             <button class="btn btn-danger " disabled="disabled" data-toggle="modal" data-target="#reply_modal">Not Compleated</button>
+                             <!-- {{ feedback.feedback_reply }} -->
+                             {% endif %}
+                             </td>
+                    </tr>
+                    {% endfor %}
+                    {% endfor %}
+
+                    
+                </table>
+            </div>
+                </div>
+           
+    </div>
+  </section>
+  <!-- /.content -->
+{% endblock main_content %}

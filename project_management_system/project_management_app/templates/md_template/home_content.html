@@ -1,0 +1,266 @@
+{% extends 'md_template/base_template.html' %}
+{% block page_title %}
+Home
+{% endblock page_title %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-danger">
+            <div class="inner">
+              <h3>{{ employee_count }}</h3>
+
+              <p>Total Employees</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="{% url 'manage_employee' %}" class="small-box-footer">&nbsp;</a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-info">
+            <div class="inner">
+              <h3>{{ project_count }}</h3>
+
+              <p>Total Project</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="{% url 'manage_project' %}" class="small-box-footer">&nbsp;</a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-warning">
+            <div class="inner">
+              <h3>{{ departmentname_count }}</h3>
+
+              <p>Total Department</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="{% url 'manage_departmentname' %}" class="small-box-footer">&nbsp;</a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-success">
+            <div class="inner">
+              <h3>{{ department_count }}</h3>
+
+              <p>HOD</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="{% url 'manage_employee' %}" class="small-box-footer">&nbsp;</a>
+          </div>
+        </div>
+        <!-- ./col -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <!-- PIE CHART -->
+        <div class="card card-danger">
+          <div class="card-header">
+            <h3 class="card-title">Employee And Department Head Chart</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+              </button>
+              <!-- <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button> -->
+            </div>
+          </div>
+          <div class="card-body">
+            <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <div class="col-lg-6">
+        <!-- DONUT CHART -->
+        <div class="card card-success">
+          <div class="card-header">
+            <h3 class="card-title">Total Project in Each Department</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+              </button>
+              <!-- <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button> -->
+            </div>
+          </div>
+          <div class="card-body">
+            <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <!-- PIE CHART -->
+        <div class="card card-info">
+          <div class="card-header">
+            <h3 class="card-title">Total Employees in Each Department</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+              </button>
+              <!-- <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button> -->
+            </div>
+          </div>
+          <div class="card-body">
+            <canvas id="pieChart2" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        </div>
+        <div class="col-lg-6">
+          <!-- PIE CHART -->
+        <div class="card card-danger">
+          <div class="card-header">
+            <h3 class="card-title">Total Employees in Each Project</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+              </button>
+              <!-- <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button> -->
+            </div>
+          </div>
+          <div class="card-body">
+            <canvas id="pieChart4" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+  <!-- /.content -->
+{% endblock main_content %}
+{% block custom_js %}
+<script>
+  $(document).ready(function(){
+
+
+    var pieData = {
+      labels: [
+          'Employees', 
+          'Department Head'
+      ],
+      datasets: [
+        {
+          data: [{{ employee_count }},{{ department_count }}],
+          backgroundColor : ['#f56954', '#00a65a'],
+        }
+      ]
+    };
+
+
+    var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+    var pieOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    var pieChart = new Chart(pieChartCanvas, {
+      type: 'pie',
+      data: pieData,
+      options: pieOptions      
+    });
+
+    //Second chart for  Total Project in Each departmentname
+    var project_count_list={{ project_count_list }};
+    var departmentname_list={{ departmentname_list|safe }};
+    var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+    var donutData        = {
+      labels: departmentname_list,
+      datasets: [
+        {
+          data: project_count_list,
+          backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+        }
+      ]
+    }
+    var donutOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    var donutChart = new Chart(donutChartCanvas, {
+      type: 'doughnut',
+      data: donutData,
+      options: donutOptions      
+    });
+
+
+    var employee_count_list_in_departmentname={{ employee_count_list_in_departmentname }};
+    //show total employee in eah department
+    var pieData2 = {
+      labels:departmentname_list,
+      datasets: [
+        {
+          data: employee_count_list_in_departmentname,
+          backgroundColor : ['#00a65a','#ff3d00','#aa00ff','#f56954'],
+        }
+      ]
+    };
+
+
+    var pieChartCanvas2 = $('#pieChart2').get(0).getContext('2d')
+    var pieOptions2     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
+    var pieChart2 = new Chart(pieChartCanvas2, {
+      type: 'pie',
+      data: pieData2,
+      options: pieOptions2      
+    });
+
+    //show total employee in eah project
+
+    var employee_count_list_in_project={{ employee_count_list_in_project }};
+    var project_list={{ project_list|safe }};
+    var pieData3 = {
+      labels:project_list,
+      datasets: [
+        {
+          data: employee_count_list_in_project,
+          backgroundColor : ['#00a65a','#ff3d00','#aa00ff','#f56954'],
+        }
+      ]
+    };
+
+
+    var pieChartCanvas3 = $('#pieChart4').get(0).getContext('2d')
+    var pieOptions3     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
+    var pieChart3 = new Chart(pieChartCanvas3, {
+      type: 'pie',
+      data: pieData3,
+      options: pieOptions3      
+    });
+  });
+</script>
+{% endblock custom_js %}

@@ -1,0 +1,70 @@
+{% extends 'md_template/base_template.html' %}
+{% block page_title %}
+Add Project
+{% endblock page_title %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Add Project</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form role="form" action="/add_project_save" method="POST">
+                {% csrf_token %}
+                <div class="card-body">
+                  <div class="form-group">
+                    <label>Project Name</label>
+                    <input type="text" class="form-control" name="project_name" placeholder="Enter project" value="{{ project.project_name }}" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Department Name</label>
+                    <select  class="form-control" name="department_name"  required>
+                        {% for departmentname in departmentname %}
+                        <option value="{{ departmentname.id }}">{{ departmentname.department_name }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Department</label>
+                    <select  class="form-control" name="department"  required>
+                        {% for department in department %}
+                        <option value="{{ department.id }}">{{ department.admin.first_name }}  {{ department.admin.last_name }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Project Details</label>
+                    <textarea rows="10" class="form-control" name="project_details" placeholder="Enter Details" required>
+                    </textarea>
+                  </div>
+                <div class="form-group">
+                    {% if messages %}
+                      {% for message in messages %}
+                      {% if message.tags == 'error' %}
+                      <div class="alert alert-danger" style="margin-top:10px;">{{message}}</div>
+                      {% endif %}
+                      {% if message.tags == 'success' %}
+                      <div class="alert alert-success" style="margin-top:10px;">{{message}}</div>
+                      {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                  </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary btn-block">Add Project</button>
+                </div>
+              </form>
+            </div>
+            <!-- /.card -->
+
+           
+    </div>
+  </section>
+  <!-- /.content -->
+{% endblock main_content %}

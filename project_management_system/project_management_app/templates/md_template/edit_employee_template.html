@@ -1,0 +1,178 @@
+{% extends 'md_template/base_template.html' %}
+{% block page_title %}
+Edit Employee | Username :{{ employees.admin.username }} #ID : {{ employees.admin.id }}
+{% endblock page_title %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Edit Employee</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form role="form" action="/edit_employee_save" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card-body">
+                  <div class="form-group">
+                    <label>Email address</label>
+                    <input type="email" class="form-control" name="email" placeholder="Enter email" value="{{ employees.admin.email }}" required id="id_email" autocomplete="off">
+                  </div>
+                  <!-- <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                  </div> -->
+                  <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" name="first_name" placeholder="First name" value="{{ employees.admin.first_name }}" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" name="last_name" placeholder="Last name" value="{{ employees.admin.last_name }}" required>
+                  </div>
+                  <div class="form-group">
+                    <label>Userame</label>
+                    <input type="text" class="form-control" name="username" placeholder="Username" value="{{ employees.admin.username }}" required id="id_username" autocomplete="off">
+                  </div>
+                  <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" class="form-control" name="address" placeholder="Address" value="{{ employees.address }}" required>
+                    <input type="hidden" name="employee_id" value="{{ employees.admin.id }}" required>
+
+                  </div>
+                  <div class="form-group">
+                    <label>Department Name</label>
+                    <select  class="form-control" name="department_name"  required>
+                        {% for departmentname in departmentname %}
+                        <option value="{{ departmentname.id }}" {% if departmentname.id == employees.departmentname_id.id %} selected {% endif %}>{{ departmentname.department_name }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Category</label>
+                    <select  class="form-control" name="category"  required>
+                       
+                        <option >Hod </option>
+                        <option >Employee</option>
+
+                        
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Gender</label>
+                    <select  class="form-control" name="gender"  required>
+                        <option {% if employee.gender == "Male" %} selected {% endif %}>Male</option>
+                        <option {% if employee.gender == "Female" %} selected {% endif %}>Female</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Select Session</label>
+                    <select  class="form-control" name="session_year"  required>
+                        {% for session_year in session_years %}
+                        <option value="{{ session_year.id }}" {% if session_year.id == employees.session_year_id.id %} selected {% endif %}>{{ session_year.session_start_year }} TO {{ session_year.session_end_year }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                  <!-- <div class="form-group">
+                    <label>Profile Pic</label>
+                    <input type="file" class="form-control" name="profile_pic"  >
+                  </div> -->
+                </div>
+                <div class="form-group">
+                    {% if messages %}
+                      {% for message in messages %}
+                      {% if message.tags == 'error' %}
+                      <div class="alert alert-danger" style="margin-top:10px;">{{message}}</div>
+                      {% endif %}
+                      {% if message.tags == 'success' %}
+                      <div class="alert alert-success" style="margin-top:10px;">{{message}}</div>
+                      {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                  </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary btn-block">Save Employee</button>
+                </div>
+              </form>
+            </div>
+            <!-- /.card -->
+
+           
+    </div>
+  </section>
+  <!-- /.content -->
+{% endblock main_content %}
+{% block custom_js %}
+<script>
+  $(document).ready(function(){
+    $("#id_email").keyup(function(){
+      var email=$(this).val();
+
+      if(email!="")
+      {
+        $.ajax({
+          url:"{% url 'check_email_exist' %}",
+          type:'POST',
+          data:{email:email}
+        })
+        .done(function(respose){
+          console.log(respose);
+          if(respose == "True"){
+            $(".email_error").remove();
+            $("<span class='email_error' style='padding:5px;color:red;font-weight:bold;'>Email Not Available</span>").insertAfter("#id_email");
+          }
+          else{
+            $(".email_error").remove();
+            $("<span class='email_error' style='padding:5px;color:green;font-weight:bold;'>Email Available</span>").insertAfter("#id_email");
+          }
+        })
+        .fail(function(){
+          console.log("failed");
+        })
+      }
+      else
+      {
+        $(".email_error").remove();
+      }
+
+    });
+
+    $("#id_username").keyup(function(){
+      var username=$(this).val();
+
+      if(username!="")
+      {
+        $.ajax({
+          url:"{% url 'check_username_exist' %}",
+          type:'POST',
+          data:{username:username}
+        })
+        .done(function(respose){
+          console.log(respose);
+          if(respose == "True"){
+            $(".username_error").remove();
+            $("<span class='username_error' style='padding:5px;color:red;font-weight:bold;'>Username Not Available</span>").insertAfter("#id_username");
+          }
+          else{
+            $(".username_error").remove();
+            $("<span class='username_error' style='padding:5px;color:green;font-weight:bold;'>Username Available</span>").insertAfter("#id_username");
+          }
+        })
+        .fail(function(){
+          console.log("failed");
+        })
+      }
+      else
+      {
+        $(".username_error").remove();
+      }
+
+      });
+  });
+</script>
+{% endblock custom_js %}

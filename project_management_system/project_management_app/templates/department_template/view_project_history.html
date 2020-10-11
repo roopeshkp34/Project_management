@@ -1,0 +1,66 @@
+{% extends 'department_template/base_template.html' %}
+{% block page_title %}
+View Project
+{% endblock page_title %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+      <!-- <a class="btn btn-primary" href="{% url 'department_view_project' %}" role="button">Project History </a> <br/>&nbsp; -->
+
+        <div class="col-md-12">
+            <!-- general form elements -->
+           
+            <!-- /.card -->
+            <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">View Project</h3>
+                </div>
+
+                <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Employee Name</th>
+                        <th>Project</th>
+                        <th>Project Details</th>
+                        <th>Files</th>
+                        <!-- <th>Department</th> -->
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in employee_project %}
+                    <tr>
+                        <td>{{ row.id }}</td>
+                        <td>{{ row.empproject_id.employee_id.admin.first_name }}  {{ row.empproject_id.employee_id.admin.last_name }}</td>
+                        <td>{{ row.empproject_id.projects_id.project_name }}</td>
+                        <td>{{ row.empproject_id.project_details }}</td>
+                        <td>
+                            
+                            <a href="{{ row.image.url }}">View File</a></td>
+                        <!-- <td>{{ row.departmentname.department_name }}</td> -->
+                        <td>
+                       
+                                {% if row.empproject_id.project_status == 1 %}
+                                <span class="alert alert-success" >Compleated</span>
+                                {% elif row.empproject_id.project_status == 2 %}
+                                <span class=" alert alert-danger">Not Compleated</span>
+                                {% else %}
+                                <span class=" alert alert-info">Pending Task</span>
+                                {% endif %}
+                               
+                           
+                             </td>
+                    </tr>
+                    {% endfor %}
+    
+                    </tbody>
+                </table>
+            </div>
+                </div>
+    </div>
+  </section>
+  <!-- /.content -->
+{% endblock main_content %}

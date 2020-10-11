@@ -1,0 +1,149 @@
+{% extends 'employee_template/base_template.html' %}
+{% block page_title %}
+View Attendance
+{% endblock page_title %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">View Attendance</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form action="{% url 'employee_view_attendence_post' %}" method="POST">
+                {% csrf_token %}
+                <div class="card-body">
+                  <div class="form-group">
+                    <label>Project</label>
+                    <select  class="form-control" name="project" id="project" required>
+                        {% for project in projects %}
+                        <option value="{{ project.id }}">{{ project.project_name }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-6">
+                  <div class="form-group">
+                    <label>Start Date</label>
+                    <input type="date" name="start_date" class="form-control" placeholder="Start Date" required>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="form-group">
+                      <label>Start Date</label>
+                      <input type="date" name="end_date" class="form-control" placeholder="End Date" required>
+                      </div>
+                    </div>
+                  </div>
+                 
+                    
+                <div class="form-group">
+                    {% if messages %}
+                      {% for message in messages %}
+                      {% if message.tags == 'error' %}
+                      <div class="alert alert-danger" style="margin-top:10px;">{{message}}</div>
+                      {% endif %}
+                      {% if message.tags == 'success' %}
+                      <div class="alert alert-success" style="margin-top:10px;">{{message}}</div>
+                      {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                  </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary btn-block" id="fetch_employee">Fetch Attendance</button>
+                </div>
+                <div id="employee_data" class="card-footer">
+
+                </div>
+             
+            </div>
+          </form>
+            <!-- /.card -->
+
+           
+    </div>
+  </section>
+  <!-- /.content -->
+{% endblock main_content %}
+<!-- {% block custom_js %}
+<script>
+  $(document).ready(function(){
+    $("#fetch_employee").click(function(){
+      var project=$("#project").val()
+      var session_year=$("#session_year").val()
+
+      $.ajax({
+        url:"{% url 'get_employees' %}",
+        type:'POST',
+        data:{project:project,session_year:session_year},
+      })
+      .done(function(response){
+        var json_data=JSON.parse(response);
+        console.log(json_data)
+        var div_data="<div class='form-group'><label>Attendance Date :</label><input type='date' name='attendence_date' id='attendence_date' class='form-control'</div>"
+        div_data+="<div class='form-group><div class='row'>";
+      
+        for (key in json_data)
+        {
+          div_data+="<div class='col-lg-2'><div class='form-check'><input type='checkbox' checked='checked' name='employee_data[]' value='"+ json_data[key]['id'] +"' />  <label class='form-check-label'>"+ json_data[key]['name']+" </label></div></div> ";
+        }
+        div_data+="</div></div>";
+        div_data+="<div class='form-group'> ";
+        div_data+="<button id='save_attendance' class='btn btn-success btn-block' type='button'>Save Attendance Data</button> ";
+        div_data+="</div> ";
+        $("#employee_data").html(div_data);
+      })
+      .fail(function(){
+        alert("Error in Fetching Employee")
+      })
+      $(document).on("click","#save_attendance",function(){
+
+        $(this).attr("disabled","disabled")
+        $(this).text("Saving Attendence Data..")
+
+        var employee_data=$("input[name='employee_data[]']").map(function(){ 
+          if($(this).is(":checked")){
+            return {"id": $(this).val(),"status":1};
+          } 
+          else{
+            return {"id": $(this).val(),"status":0};
+          }
+        }).get()
+        var attendence_date=$("#attendence_date").val();
+        var project_id=$("#project").val();
+        var session_year_id=$("#session_year").val();
+        console.log(employee_data)
+        employee_data=JSON.stringify(employee_data)
+
+       
+
+        $.ajax({
+          url:"{% url 'save_attendance_data' %}",
+          type:'POST',
+          data:{employee_ids:employee_data,attendence_date:attendence_date,project_id:project_id,session_year_id:session_year_id},
+        })
+        .done(function(response){
+
+          if (response=="OK"){
+            alert("Attendance Save")
+          }
+          else{
+            alert("Error in Saving Data")
+          }
+          location.reload()
+        })
+        .fail(function(){
+          alert("Error in Saving Employee")
+        })
+      })
+    })
+
+  })
+</script>
+{% endblock custom_js %} -->
