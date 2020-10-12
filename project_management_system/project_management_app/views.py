@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from project_management_app.EmailBackEnd import EmailBackEnd
 from django.contrib.auth import login,authenticate,logout
-import requests
 import json
 from django.contrib import messages
 
