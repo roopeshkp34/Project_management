@@ -34,8 +34,16 @@ urlpatterns = [
     path('add_employee_save',MdViews.add_employee_save,name="add_employee_save"),
     path('add_departmentname',MdViews.add_departmentname,name="add_departmentname"),
     path('add_departmentname_save',MdViews.add_departmentname_save,name="add_departmentname_save"),
+
+
     path('add_project',MdViews.add_project,name="add_project"),
     path('add_project_save',MdViews.add_project_save,name="add_project_save"),
+
+    path('md_employee_add_project',MdViews.md_employee_add_project,name="md_employee_add_project"),
+    path('md_save_employee_project',MdViews.md_save_employee_project,name="md_save_employee_project"),
+    path('get_employeess',MdViews.get_employeess,name="get_employeess"),
+    
+
     path('manage_session',MdViews.manage_session,name="manage_session"),
     path('add_session_save',MdViews.add_session_save,name="add_session_save"),
     path('manage_employee',MdViews.manage_employee,name="manage_employee"),

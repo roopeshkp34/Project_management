@@ -63,7 +63,7 @@ Take Attendance
   </section>
   <!-- /.content -->
   <!-- Modal -->
-  <!-- <div class="modal fade" id="reply_modal" role="dialog">
+  <div class="modal fade" id="reply_modal" role="dialog">
     <div class="modal-dialog">
     
       <div class="modal-content">
@@ -75,7 +75,7 @@ Take Attendance
         <div class="modal-body">
             <input type="hidden" id="reply_id" name="reply_id">
           <p>Absent List <span id="reply_name"></span></p>
-          <div id="result"></div>
+          <input class="form-control" rows="1" id="absent_list" disabled="disabled">
           <button id='save_attendance' class="btn btn-info btn-block">Save</button>
         </div>
         <div class="modal-footer">
@@ -84,7 +84,7 @@ Take Attendance
       </div>
       
     </div>
-  </div> -->
+  </div>
 <!-- /.content -->
 {% endblock main_content %}
 {% block custom_js %}
@@ -102,12 +102,6 @@ Take Attendance
       .done(function(response){
         var json_data=JSON.parse(response);
         console.log(json_data)
-        // var field = document.querySelector('#attendence_date');
-        // var date = new Date();
-        // // document.getElementById('attendence_date').innerHTML = date;
-        // // $("#attendence_date").html(date);
-        // console.log(date);
-        
         var div_data="<div class='form-group'><label>Attendance Date :</label><input type='date.now()' name='attendence_date' id='attendence_date' class='form-control'  value={{ d1 }} </div>";
         
         div_data+="<div class='form-group><div class='row'>";
@@ -118,7 +112,7 @@ Take Attendance
         }
         div_data+="</div></div>";
         div_data+="<div class='form-group'> ";
-        div_data+="<button  data-toggle='modal' id='save_attendance' data-target='#reply_modal' class='btn btn-success btn-block' type='button'>Save Attendance Data</button> ";
+        div_data+="<button  data-toggle='modal' id='view_attendance' data-target='#reply_modal' class='btn btn-success btn-block' type='button'>Save Attendance Data</button> ";
         div_data+="</div> ";
     
 
@@ -141,7 +135,6 @@ Take Attendance
           }
         }).get()
 
-        // confirm_attendance();
 
         var attendence_date=$("#attendence_date").val();
         var project_id=$("#project").val();
@@ -171,32 +164,31 @@ Take Attendance
         })
       })
     })
-    // function confirm_attendance(){
-    //   array_confirm = []
-    //   const btn = document.querySelectorAll(".attendance_confirm");
-    //   btn.forEach(data=>{
+    $(document).on("click","#view_attendance",function(){
+      array_confirm = []
+      const btn = document.querySelectorAll(".attendance_confirm");
+      btn.forEach(data=>{
         
-    //     if($(data).prop("checked") == true){
+        if($(data).prop("checked") == true){
 
-    //     }
-    //     else if($(data).prop("checked") == false){
-    //       const data1 = data.dataset.fg
+        }
+        else if($(data).prop("checked") == false){
+          const data1 = data.dataset.fg
 
-    //       array_confirm.push(data1)
-    //     }
-    //   })
-    //   if(array_confirm.length == 0){
-        
-    //   }
-    //   else{
-    //     var isValid=confirm("Absentees List : " +array_confirm)
-    //     if (!isValid){
-    //       event.preventDefault();
-    //       // alert("It Wont delete");
-    //     }
-    //       // console.log("Saved to the database");
-    //     }
-    // }
+          array_confirm.push(data1)
+        }
+      })
+      if(array_confirm.length == 0)
+      {
+        document.getElementById("absent_list").value="No absenties"
+      }
+      else
+      {
+        document.getElementById("absent_list").value = array_confirm.toString();
+
+      }
+    
+    })
     
   })
 </script>

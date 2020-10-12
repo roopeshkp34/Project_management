@@ -34,77 +34,33 @@
                   </p>
                 </a>
               </li>
-          <!-- <li class="nav-item">
-            {% url 'add_department' as add_department %}
-            <a href="{{ add_department }}" class="nav-link {% if request.path == add_department %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Add Department
-               
-              </p>
-            </a>
-          </li> -->
-          <!-- <li class="nav-item">
-            {% url 'manage_department' as manage_department %}
-            {% url 'edit_department' department_id=id as edit_department %}
-            <a href="{{ manage_department }}" class="nav-link {% if request.path == manage_department %} active {% endif %} {% if request.path == edit_department %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Manage Department
-              </p>
-            </a>
-          </li> -->
-          <!-- <li class="nav-item">
-            {% url 'add_employee' as add_employee %}
-            <a href="{{ add_employee }}" class="nav-link {% if request.path == add_employee %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Add Employee
-              </p>
-            </a>
-          </li> -->
           <li class="nav-item">
             {% url 'manage_employee' as manage_employee %}
+            {% url 'add_employee' as add_employee %}
             {% url 'edit_employees' employee_id=id as edit_employees %}
-            <a href="{{ manage_employee }}" class="nav-link {% if request.path == manage_employee %} active {% endif %} {% if request.path == edit_employees %} active {% endif %}">
+            <a href="{{ manage_employee }}" class="nav-link {% if request.path == manage_employee %} active {% endif %} {% if request.path == edit_employees %} active {% endif %}{% if request.path == add_employee %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Employees
               </p>
             </a>
           </li>
-          <!-- <li class="nav-item">
-            {% url 'add_departmentname' as add_departmentname %}
-            <a href="{{ add_departmentname }}" class="nav-link {% if request.path == add_departmentname %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Add Department Name
-              </p>
-            </a>
-          </li> -->
           <li class="nav-item">
             {% url 'manage_departmentname' as manage_departmentname %}
+            {% url 'add_departmentname' as add_departmentname %}
             {% url 'edit_departmentname' departmentname_id=id as edit_departmentname %}
-            <a href="{{ manage_departmentname }}" class="nav-link {% if request.path == manage_departmentname %} active {% endif %} {% if request.path == edit_departmentname %} active {% endif %}">
+            <a href="{{ manage_departmentname }}" class="nav-link {% if request.path == manage_departmentname %} active {% endif %} {% if request.path == edit_departmentname %} active {% endif %}{% if request.path == add_departmentname %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Departments
               </p>
             </a>
           </li>
-          <!-- <li class="nav-item">
-            {% url 'add_project' as add_project %}
-            <a href="{{ add_project }}" class="nav-link {% if request.path == add_project %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Add Project
-              </p>
-            </a>
-          </li> -->
           <li class="nav-item">
             {% url 'manage_project' as manage_project %}
+            {% url 'md_employee_add_project' as md_employee_add_project %}
             {% url 'edit_project' project_id=id as edit_project %}
-            <a href="{{ manage_project }}" class="nav-link {% if request.path == manage_project %} active {% endif %} {% if request.path == edit_project %} active {% endif %}">
+            <a href="{{ manage_project }}" class="nav-link {% if request.path == manage_project %} active {% endif %} {% if request.path == edit_project %} active {% endif %} {% if request.path == md_employee_add_project %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Projects
@@ -120,16 +76,6 @@
               </p>
             </a>
           </li>
-          
-          <!-- <li class="nav-item">
-            {% url 'department_feedback_message' as department_feedback_message %}
-            <a href="{{ department_feedback_message }}" class="nav-link {% if request.path == department_feedback_message %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Feedbacks
-              </p>
-            </a>
-          </li> -->
           <li class="nav-item">
             {% url 'department_comments' as department_comments %}
             <a href="{{ department_comments }}" class="nav-link {% if request.path == department_comments %} active {% endif %}">
@@ -139,15 +85,6 @@
               </p>
             </a>
           </li>
-          <!-- <li class="nav-item">
-            {% url 'department_feedback_message' as department_feedback_message %}
-            <a href="{{ department_feedback_message }}" class="nav-link {% if request.path == department_feedback_message %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Department Feedback
-              </p>
-            </a>
-          </li> -->
           <li class="nav-item">
             {% url 'employee_leave_view' as employee_leave_view %}
             <a href="{{ employee_leave_view }}" class="nav-link {% if request.path == employee_leave_view %} active {% endif %}">
@@ -158,15 +95,6 @@
               </p>
             </a>
           </li>
-          <!-- <li class="nav-item">
-            {% url 'department_leave_view' as department_leave_view %}
-            <a href="{{ department_leave_view }}" class="nav-link {% if request.path == department_leave_view %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Department Leave
-              </p>
-            </a>
-          </li> -->
           <li class="nav-item">
             {% url 'admin_view_attendance' as admin_view_attendance %}
             <a href="{{ admin_view_attendance }}" class="nav-link {% if request.path == admin_view_attendance %} active {% endif %}">

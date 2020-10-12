@@ -78,15 +78,6 @@
               </p>
             </a>
           </li>
-          <!-- <li class="nav-item">
-            {% url 'department_feedback' as department_feedback %}
-            <a href="{{ department_feedback }}" class="nav-link {% if request.path == department_feedback %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                FeedBack
-              </p>
-            </a>
-          </li> -->
           <li class="nav-item">
             {% url 'department_comment_sent' as department_comment_sent %}
             <a href="{{ department_comment_sent }}" class="nav-link {% if request.path == department_comment_sent %} active {% endif %}">

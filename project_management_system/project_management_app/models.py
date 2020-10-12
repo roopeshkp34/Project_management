@@ -37,41 +37,15 @@ class DepartmentName(models.Model):
 
 
 
-# class Department(models.Model):
-#     id=models.AutoField(primary_key=True)
-#     admin=models.OneToOneField(CustomUser,on_delete=models.CASCADE)
-#     address=models.TextField()
-#     created_at=models.DateTimeField(auto_now_add=True)
-#     updated_at =models.DateTimeField(auto_now_add=True)
-#     objects=models.Manager()
-    
-
-
-
-# class Projects(models.Model):
-#     id=models.AutoField(primary_key=True)
-#     project_name=models.CharField(max_length=255)
-#     project_details=models.CharField(max_length=255)
-#     departmentname_id=models.ForeignKey(DepartmentName,on_delete=models.CASCADE,default=1)
-#     department_id=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
-#     created_at=models.DateTimeField(auto_now_add=True)
-#     updated_at =models.DateTimeField(auto_now_add=True)
-#     objects=models.Manager()
-
 
 class Employee(models.Model):
     id=models.AutoField(primary_key=True)
     admin=models.OneToOneField(CustomUser,on_delete=models.CASCADE)
-    # name=models.CharField(max_length=255)
-    # email=models.CharField(max_length=255)
-    # password=models.CharField(max_length=255)
     gender=models.CharField(max_length=255)
     category=models.CharField(max_length=255)
     profile_pic=models.FileField()
     address=models.TextField()
     departmentname_id=models.ForeignKey(DepartmentName,on_delete=models.DO_NOTHING)
-    # session_start_year=models.DateField()
-    # session_end_year=models.DateField()
     session_year_id=models.ForeignKey(SessionYearModel,on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at =models.DateTimeField(auto_now=True)
@@ -94,6 +68,7 @@ class ProjectImages(models.Model):
     id=models.AutoField(primary_key=True)
     project_id=models.ForeignKey(Projects,on_delete=models.CASCADE)
     image=models.FileField(upload_to='media/collection/')
+
     def __str__(self):
         return self.title
 
@@ -132,15 +107,6 @@ class LeaveReportEmployee(models.Model):
     objects=models.Manager()
 
 
-# class LeaveReportDepartment(models.Model):
-#     id=models.AutoField(primary_key=True)
-#     department_id=models.ForeignKey(Department,on_delete=models.CASCADE)
-#     leave_date=models.CharField(max_length=255)
-#     leave_message=models.TextField()
-#     leave_status=models.IntegerField(default=0)
-#     created_at=models.DateTimeField(auto_now_add=True)
-#     updated_at=models.DateTimeField(auto_now_add=True)
-#     objects=models.Manager()
 
 
 class FeedBackEmployee(models.Model):
@@ -167,14 +133,6 @@ class Comment(models.Model):
 
 
 
-# class FeedBackDepartment(models.Model):
-#     id=models.AutoField(primary_key=True)
-#     department_id=models.ForeignKey(Department,on_delete=models.CASCADE)
-#     feedback=models.TextField()
-#     feedback_reply=models.TextField()
-#     created_at=models.DateTimeField(auto_now_add=True)
-#     updated_at=models.DateTimeField(auto_now_add=True)
-#     objects=models.Manager()
 
 
 class NotificationEmployee(models.Model):
@@ -185,16 +143,6 @@ class NotificationEmployee(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
     objects=models.Manager()
 
-
-# class NotificationDepartment(models.Model):
-#     id=models.AutoField(primary_key=True)
-#     department_id=models.ForeignKey(Department,on_delete=models.CASCADE)
-#     message=models.TextField()
-#     created_at=models.DateTimeField(auto_now_add=True)
-#     updated_at=models.DateTimeField(auto_now_add=True)
-#     objects=models.Manager()
-
- 
 
 
 
@@ -214,6 +162,7 @@ class EmployeeProjectImages(models.Model):
     id=models.AutoField(primary_key=True)
     empproject_id=models.ForeignKey(EmployeeProject,on_delete=models.CASCADE)
     image=models.FileField(upload_to='media/collection/')
+    
     def __str__(self):
         return self.title
 

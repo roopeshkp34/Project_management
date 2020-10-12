@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.core.files.storage import FileSystemStorage
-from project_management_app.models import DepartmentName,Comment,ProjectImages,SessionYearModel,CustomUser,Employee,Attendence,AttendenceReport,Projects,FeedBackEmployee,LeaveReportEmployee
+from project_management_app.models import DepartmentName,EmployeeProject,EmployeeProjectImages,Comment,ProjectImages,SessionYearModel,CustomUser,Employee,Attendence,AttendenceReport,Projects,FeedBackEmployee,LeaveReportEmployee
 
 
 def admin_home(request):
@@ -155,6 +155,52 @@ def add_project_save(request):
         except:
             messages.error(request, "Failed to Add Project!")
             return redirect('/add_project')
+
+
+
+def md_employee_add_project(request):
+    departmentname=DepartmentName.objects.all()
+    
+    return render(request,"md_template/md_add_project_template.html",{"departmentname":departmentname})  
+
+
+
+def md_save_employee_project(request):
+    if request.method!='POST':
+        return redirect("md_employee_add_project")
+    else:
+        project_name=request.POST.get("project_name")
+        project_details=request.POST.get("project_details")
+        departmentname_id=request.POST.get("department_name")
+        departmentname=DepartmentName.objects.get(id=departmentname_id)
+        department_id=request.POST.get("department")
+        images=request.FILES.getlist("file[]")
+        department=Employee.objects.get(admin=department_id)
+        
+        try:
+            projects=Projects(project_name=project_name,departmentname_id=departmentname,employee_id=department,project_details=project_details)
+            projects.save()
+            for img in images:
+                fs=FileSystemStorage()
+                file_path=fs.save(img.name,img)
+                pimage=ProjectImages(project_id=projects,image=file_path)
+                pimage.save()
+            messages.success(request, "Project Senting  Successfully!")
+            return redirect('/md_employee_add_project')
+        except:
+            messages.error(request, "Failed to Sent Project")
+            return redirect('/md_employee_add_project')
+@csrf_exempt
+def get_employeess(request):
+    employees=Employee.objects.all()
+    list_data=[]
+    for employee in employees:
+        if employee.category=="Hod":
+            data_small={"id":employee.admin.id,"name":employee.admin.first_name+"  "+employee.admin.last_name}
+            list_data.append(data_small)
+    return JsonResponse(json.dumps(list_data),content_type="application/json",safe=False)
+
+
 
 
 
@@ -324,23 +370,23 @@ def edit_departmentname_save(request):
         return redirect('edit_employees')
     else:
         departmentname_id=request.POST.get("departmentname_id")
-        employee_id=request.POST.get("employee_id")
+        # employee_id=request.POST.get("employee_id")
 
         department_name=request.POST.get("department_name")
         department=request.POST.get("hod")
 
-        # try:
-        departmentname=DepartmentName.objects.get(id=departmentname_id)
-        departmentname.department_name=department_name
-        departmentname.save()
-        department=Employee.objects.get(id=department)
-        department.category='Hod'
-        department.save()
-        messages.success(request, "Department Name Edited Successfully!")
-        return redirect('/edit_departmentname/'+departmentname_id)
-        # except:
-        #     messages.error(request, "Failed to Edit Department Name!")
-        #     return redirect('/edit_departmentname/'+departmentname_id)
+        try:
+            departmentname=DepartmentName.objects.get(id=departmentname_id)
+            departmentname.department_name=department_name
+            departmentname.save()
+            department=Employee.objects.get(id=department)
+            department.category='Hod'
+            department.save()
+            messages.success(request, "Department Name Edited Successfully!")
+            return redirect('/edit_departmentname/'+departmentname_id)
+        except:
+            messages.error(request, "Failed to Edit Department Name!")
+            return redirect('/edit_departmentname/'+departmentname_id)
 
 
 
@@ -349,7 +395,6 @@ def edit_project(request,project_id):
     departmentname=DepartmentName.objects.all()
     department=Employee.objects.filter(category='Hod')
     project=Projects.objects.get(id=project_id)
-    # print(department)
     return render(request,"md_template/edit_project_template.html",{"project":project,"departmentname":departmentname,"department":department,"id":project_id})
 
 
@@ -397,12 +442,8 @@ def department_feedback_message_replied(request):
         feedback.save()
 
         return HttpResponse("True")
-        # messages.success(request, "Project Edited Successfully!")
-        # return redirect('/edit_project/'+project_id)
     except:
-        return HttpResponse("True")
-        # messages.error(request, "Failed to Edit Project!")
-        # return redirect('/edit_project/'+project_id)   
+        return HttpResponse("True")  
 
 
 def department_comments(request):

@@ -92,7 +92,6 @@ def get_employees(request):
     project=Projects.objects.get(id=project_id)
     session_model=SessionYearModel.objects.get(id=session_year)
     employees=Employee.objects.filter(departmentname_id=project.departmentname_id,session_year_id=session_model)
-    # employee_data=serializers.serialize("Python",employees)
     list_data=[]
     for employee in employees:
         if employee.category=="Employee":
@@ -111,7 +110,6 @@ def save_attendance_data(request):
     project_model=Projects.objects.get(id=project_id)
     session_model=SessionYearModel.objects.get(id=session_year_id)
     json_employee=json.loads(employee_ids)
-    # print(data[0]['id'])
     try:
         attendance=Attendence(projects_id=project_model,attendence_date=attendence_date,session_year_id=session_model)
         attendance.save()
@@ -212,10 +210,12 @@ def department_apply_leave_save(request):
             return redirect('/department_apply_leave')
 
 
+
 def department_feedback(request):
     department_id=Employee.objects.get(admin=request.user.id)
     feedback_data=FeedBackEmployee.objects.filter(employee_id=department_id).order_by('-id')
     return render(request,"department_template/department_feedback.html",{"feedback_data":feedback_data})
+
 
 
 def department_feedback_save(request):
@@ -328,13 +328,8 @@ def save_employee_project(request):
 
 
 def department_view_project(request):
-    # employees=Employee.objects.all()
-    # departmentname=DepartmentName.objects.all()
     employee_project=EmployeeProjectImages.objects.all()
     list=[]
-    # for projec in employee_project:
-    #     project_fil=EmployeeProjectImages.objects.filter(empproject_id=projec)
-    #     list.append(project_fil)
     return render(request,"department_template/view_project_history.html",{"employee_project":employee_project})
     
 
