@@ -27,7 +27,7 @@
           <li class="nav-item">
             {% url 'employee_home' as employee_home %}
             <a href="{{ employee_home }}" class="nav-link {% if request.path == employee_home %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-home"></i>
               <p>
                 Home
               </p>
@@ -36,7 +36,7 @@
           <li class="nav-item">
             {% url 'employee_view_attendence' as employee_view_attendence %}
             <a href="{% url 'employee_view_attendence' %}" class="nav-link {% if request.path == employee_view_attendence %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-hourglass"></i>
               <p>
                 View Attendance
               </p>
@@ -45,7 +45,7 @@
           <li class="nav-item">
             {% url 'employee_view_project' as employee_view_project %}
             <a href="{{ employee_view_project }}" class="nav-link {% if request.path == employee_view_project %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-file-code"></i>
               <p>
                 View Project
               </p>
@@ -54,7 +54,7 @@
           <li class="nav-item">
             {% url 'employee_apply_leave' as employee_apply_leave %}
             <a href="{{ employee_apply_leave }}" class="nav-link {% if request.path == employee_apply_leave %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-calendar-check"></i>
               <p>
                 Apply Leave
               </p>
@@ -63,7 +63,7 @@
           <li class="nav-item">
             {% url 'employee_comments' as employee_comments %}
             <a href="{{ employee_comments }}" class="nav-link {% if request.path == employee_comments %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-comments"></i>
               <p>
                 FeedBack
               </p>

@@ -27,7 +27,7 @@
                <li class="nav-item">
                 {% url 'admin_home' as admin_home %}
                 <a href="{{ admin_home }}" class="nav-link {% if request.path == admin_home %} active {% endif %}">
-                  <i class="nav-icon fas fa-th"></i>
+                  <i class="nav-icon fas fa-home"></i>
                   <p>
                     Home
                    
@@ -39,7 +39,7 @@
             {% url 'add_employee' as add_employee %}
             {% url 'edit_employees' employee_id=id as edit_employees %}
             <a href="{{ manage_employee }}" class="nav-link {% if request.path == manage_employee %} active {% endif %} {% if request.path == edit_employees %} active {% endif %}{% if request.path == add_employee %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-user"></i>
               <p>
                 Employees
               </p>
@@ -50,7 +50,7 @@
             {% url 'add_departmentname' as add_departmentname %}
             {% url 'edit_departmentname' departmentname_id=id as edit_departmentname %}
             <a href="{{ manage_departmentname }}" class="nav-link {% if request.path == manage_departmentname %} active {% endif %} {% if request.path == edit_departmentname %} active {% endif %}{% if request.path == add_departmentname %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-star"></i>
               <p>
                 Departments
               </p>
@@ -61,7 +61,7 @@
             {% url 'md_employee_add_project' as md_employee_add_project %}
             {% url 'edit_project' project_id=id as edit_project %}
             <a href="{{ manage_project }}" class="nav-link {% if request.path == manage_project %} active {% endif %} {% if request.path == edit_project %} active {% endif %} {% if request.path == md_employee_add_project %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-desktop"></i>
               <p>
                 Projects
               </p>
@@ -70,7 +70,7 @@
           <li class="nav-item">
             {% url 'manage_session' as manage_session %}
             <a href="{{ manage_session }}" class="nav-link {% if request.path == manage_session %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-calendar"></i>
               <p>
                 Manage Session
               </p>
@@ -79,7 +79,7 @@
           <li class="nav-item">
             {% url 'department_comments' as department_comments %}
             <a href="{{ department_comments }}" class="nav-link {% if request.path == department_comments %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-comments"></i>
               <p>
                 FeedBack
               </p>
@@ -88,7 +88,7 @@
           <li class="nav-item">
             {% url 'employee_leave_view' as employee_leave_view %}
             <a href="{{ employee_leave_view }}" class="nav-link {% if request.path == employee_leave_view %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-calendar-check"></i>
               <p>
                 <!-- Employee Leave -->
                 Leave View
@@ -98,7 +98,7 @@
           <li class="nav-item">
             {% url 'admin_view_attendance' as admin_view_attendance %}
             <a href="{{ admin_view_attendance }}" class="nav-link {% if request.path == admin_view_attendance %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-hourglass"></i>
               <p>
                 View Attendence
               </p>
