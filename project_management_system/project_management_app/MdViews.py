@@ -192,7 +192,9 @@ def md_save_employee_project(request):
             return redirect('/md_employee_add_project')
 @csrf_exempt
 def get_employeess(request):
-    employees=Employee.objects.all()
+    department_name=request.POST.get("department_name")
+    department_id=DepartmentName.objects.get(id=department_name)
+    employees=Employee.objects.filter(departmentname_id=department_id)
     list_data=[]
     for employee in employees:
         if employee.category=="Hod":

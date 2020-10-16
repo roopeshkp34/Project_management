@@ -88,14 +88,14 @@ def department_take_attendance(request):
 def get_employees(request):
     project_id=request.POST.get("project")
     session_year=request.POST.get("session_year")
-
+    print(project_id)
     project=Projects.objects.get(id=project_id)
     session_model=SessionYearModel.objects.get(id=session_year)
     employees=Employee.objects.filter(departmentname_id=project.departmentname_id,session_year_id=session_model)
     list_data=[]
     for employee in employees:
         if employee.category=="Employee":
-            data_small={"id":employee.admin.id,"name":employee.admin.first_name+"  "+employee.admin.last_name}
+            data_small={"id":employee.admin.id,"name":employee.admin.first_name}
             list_data.append(data_small)
     return JsonResponse(json.dumps(list_data),content_type="application/json",safe=False)
 
