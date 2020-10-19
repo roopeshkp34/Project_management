@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = 'b3raey@c&wi!9v^@rla+u&o67(b!=p75ags2g+!-)0$1l7*2(5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["project.roopeshkp.co"]
 
 
 MEDIA_URL="/media/"
