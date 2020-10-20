@@ -251,10 +251,8 @@ def department_comment_sent(request):
         try:
             comment=Comment.objects.create(content=content,employee_id=department_obj,reply=comment_qs)
             comment.save()
-            messages.success(request, "Successfully Sent Feedback")
             return redirect('/department_comment_sent')
         except:
-            messages.error(request, "Failed to Sent Feedback!")
             return redirect('/department_comment_sent')
 
     
