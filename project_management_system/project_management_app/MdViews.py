@@ -227,7 +227,6 @@ def add_session_save(request):
             return redirect('/manage_session')
 
 
-
 def manage_employee(request):
     employee=Employee.objects.all()
     session=SessionYearModel.objects.all()

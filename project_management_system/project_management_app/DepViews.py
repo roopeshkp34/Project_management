@@ -236,7 +236,6 @@ def department_feedback_save(request):
             return redirect('/department_feedback')
 
 
-
 def department_comment_sent(request):
     department_id=Employee.objects.get(admin=request.user.id)
     comments=Comment.objects.filter(employee_id=department_id,reply=None).order_by('-id')

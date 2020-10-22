@@ -35,7 +35,6 @@ urlpatterns = [
     path('add_departmentname',MdViews.add_departmentname,name="add_departmentname"),
     path('add_departmentname_save',MdViews.add_departmentname_save,name="add_departmentname_save"),
 
-
     path('add_project',MdViews.add_project,name="add_project"),
     path('add_project_save',MdViews.add_project_save,name="add_project_save"),
 
