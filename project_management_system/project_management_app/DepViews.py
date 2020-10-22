@@ -252,7 +252,6 @@ def department_comment_sent(request):
             comment.save()
             return redirect('/department_comment_sent')
         except:
-            messages.error(request, "Failed to Sent Feedback!")
             return redirect('/department_comment_sent')
 
     
