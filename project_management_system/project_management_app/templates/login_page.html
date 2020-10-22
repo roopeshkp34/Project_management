@@ -29,7 +29,7 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to Project Center</p>
 
-      <form action="/doLogin" method="post">
+      <form action="/doLogin" method="post" name="form" onsubmit="return validated()">
         {% csrf_token %}
         <div class="input-group mb-3">
           <input type="email" class="form-control" placeholder="Email" name="email">
@@ -38,6 +38,7 @@
               <span class="fas fa-envelope"></span>
             </div>
           </div>
+          <div id="email_error" style="margin-top: 5px; width: 345px;font-size: 18px; color: #c62828;background: rgba(255,0,0,0.1);text-align: center; padding: 5px 8px;border-radius: 3px;border: 1px solid #EF9A9A;display: none; ">Please fill up your Email</div>
         </div>
         <div class="input-group mb-3">
           <input type="password" class="form-control" placeholder="Password" name="password">
@@ -46,6 +47,7 @@
               <span class="fas fa-lock"></span>
             </div>
           </div>
+          <div id="pass_error" style="margin-top: 5px; width: 345px;font-size: 18px; color: #c62828;background: rgba(255,0,0,0.1);text-align: center; padding: 5px 8px;border-radius: 3px;border: 1px solid #EF9A9A;display: none; ">Please fill up your Password</div>
         </div>
         <div class="input-group mb-3">
           <div class="g-recaptcha" data-sitekey="6LctodEZAAAAAEBdkZh6cstlJJwBwB0tPHMBHXsJ"></div>
@@ -116,3 +118,46 @@
 
 </body>
 </html>
+<script>
+  var email=document.forms['form']['email'];
+  var password=document.forms['form']['password'];
+
+  var email_error=document.getElementById("email_error");
+  var pass_error=document.getElementById("pass_error");
+
+
+  email.addEventListener('textInput',email_Verify);
+  password.addEventListener('textInput',pass_Verify);
+
+  function validated(){
+    if(email.value.length<9){
+      email.style.border = "1px solid red";
+      email_error.style.display = "block";
+      email.focus();
+      return false;
+
+    }
+    if(password.value.length<1){
+      password.style.border = "1px solid red";
+      pass_error.style.display = "block";
+      password.focus();
+      return false;
+
+    }
+  }
+function email_Verify(){
+  if(email.value.length>8){
+      email.style.border = "1px solid silver";
+      email_error.style.display = "none";
+      return true;
+  }
+}
+function pass_Verify(){
+  console.log(password.value.length+1)
+  if(password){
+      password.style.border = "1px solid silver";
+      pass_error.style.display = "none";
+      return true;
+  }
+}
+</script>

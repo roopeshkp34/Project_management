@@ -123,6 +123,7 @@ class Comment(models.Model):
     employee_id=models.ForeignKey(Employee,on_delete=models.CASCADE,null=True)
     content=models.TextField(max_length=160)
     reply=models.ForeignKey('Comment',null=True,related_name='replies',on_delete=models.CASCADE)
+    status=models.IntegerField(default=0)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     objects=models.Manager()

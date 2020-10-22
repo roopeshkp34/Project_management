@@ -233,12 +233,22 @@ def manage_employee(request):
     session=SessionYearModel.objects.all()
     context = {
         "employee": employee,
-        "session":session
+        "session":session,
         
     }
     return render(request,"md_template/manage_employee_template.html",context)
 
 
+def manage_employee_sort(request,name):
+    employee=Employee.objects.all()
+    session=SessionYearModel.objects.all()
+    context = {
+        "employee": employee,
+        "session":session,
+        "filter":name
+        
+    }
+    return render(request,"md_template/manage_employee_sort_template.html",context)
 
 def manage_departmentname(request):
     departmentname=DepartmentName.objects.all()

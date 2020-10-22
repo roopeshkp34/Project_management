@@ -16,15 +16,14 @@ Manage Employee
   
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
-                      <!-- drop down for filter -->
                       <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle">Filter</button>
                         <div class="dropdown-content">
-                        <a  href="{% url 'manage_employee_sort' 'Hod' %}">Hod</a>
+                        <a href="{% url 'manage_employee'  %}">All</a>
+                        <a href="{% url 'manage_employee_sort' 'Hod' %}">Hod</a>
                         <a href="{% url 'manage_employee_sort' 'Employee' %}">Employee</a>
                         </div>
                       </div>
-                      <!-- Enddrop down for filter -->
                       <div class="input-group-append">
                       </div>
                     </div>
@@ -51,6 +50,7 @@ Manage Employee
                     </thead>
                     <tbody>
                     {% for employees in employee %}
+                    {% if employees.category == filter %}
                       <tr>
                         <td>{{ employees.admin.id }}</td>
                         <td>{{ employees.admin.first_name }}  {{ employees.admin.last_name }}</td>
@@ -70,6 +70,7 @@ Manage Employee
                           <button type="submit" class="btn btn-danger">Delete</button></td>
                         </form></td>
                       </tr>
+                      {% endif %}
                     {% endfor %}
                     </tbody>
                   </table>
@@ -90,7 +91,7 @@ Manage Employee
   <!-- /.content -->
   <style>
     .dropbtn {
-      background-color: #353f4a;
+      background-color: #4CAF50;
       color: white;
       padding: 16px;
       font-size: 16px;
