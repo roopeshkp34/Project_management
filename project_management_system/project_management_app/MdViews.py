@@ -14,6 +14,8 @@ def admin_home(request):
     project_count=Projects.objects.all().count()
 
 
+    notification=Comment.objects.filter(reply=None,status=1).count()
+
     departmentname_all=DepartmentName.objects.all()
     departmentname_list=[]
     project_count_list=[]
@@ -36,7 +38,7 @@ def admin_home(request):
         employee_count_list_in_project.append(employee_count1)
 
 
-    return render(request,"md_template/home_content.html",{"employee_count":employee_count,"department_count":department_count,"departmentname_count":departmentname_count,"project_count":project_count,"departmentname_list":departmentname_list,"project_count_list":project_count_list,"employee_count_list_in_departmentname":employee_count_list_in_departmentname,"project_list":project_list,"employee_count_list_in_project":employee_count_list_in_project})
+    return render(request,"md_template/home_content.html",{"employee_count":employee_count,"department_count":department_count,"departmentname_count":departmentname_count,"project_count":project_count,"departmentname_list":departmentname_list,"project_count_list":project_count_list,"employee_count_list_in_departmentname":employee_count_list_in_departmentname,"project_list":project_list,"employee_count_list_in_project":employee_count_list_in_project,"notification":notification})
 
 
 def add_employee(request):
@@ -207,7 +209,9 @@ def get_employeess(request):
 
 
 def manage_session(request):
-    return render(request,"md_template/manage_session_template.html")
+    notification=Comment.objects.filter(reply=None,status=1).count()
+    session=SessionYearModel.objects.all()
+    return render(request,"md_template/manage_session_template.html",{"notification":notification,"session":session})
 
 
 
@@ -230,9 +234,11 @@ def add_session_save(request):
 def manage_employee(request):
     employee=Employee.objects.all()
     session=SessionYearModel.objects.all()
+    notification=Comment.objects.filter(reply=None,status=1).count()
     context = {
         "employee": employee,
         "session":session,
+        "notification":notification,
         
     }
     return render(request,"md_template/manage_employee_template.html",context)
@@ -241,18 +247,22 @@ def manage_employee(request):
 def manage_employee_sort(request,name):
     employee=Employee.objects.all()
     session=SessionYearModel.objects.all()
+    notification=Comment.objects.filter(reply=None,status=1).count()
     context = {
         "employee": employee,
         "session":session,
-        "filter":name
+        "filter":name,
+        "notification":notification,
         
     }
     return render(request,"md_template/manage_employee_sort_template.html",context)
 
 def manage_departmentname(request):
     departmentname=DepartmentName.objects.all()
+    notification=Comment.objects.filter(reply=None,status=1).count()
     context = {
         "departmentname": departmentname,
+        "notification":notification,
         
     }
     return render(request,"md_template/manage_departmentname_template.html",context)
@@ -262,12 +272,14 @@ def manage_departmentname(request):
 def manage_project(request):
     project=Projects.objects.all()
     list=[]
+    notification=Comment.objects.filter(reply=None,status=1).count()
     for projec in project:
         project_fil=ProjectImages.objects.filter(project_id=projec)
         list.append(project_fil)
     context = {
         "project": project,
         "list":list,
+        "notification":notification,
         
     }
     
@@ -435,6 +447,11 @@ def edit_project_save(request):
             messages.error(request, "Failed to Edit Project!")
             return redirect('/edit_project/'+project_id)
 
+def edit_session(request,session_year_id):
+    session_year=SessionYearModel.objects.get(id=session_year_id)
+    print(session_year)
+    return render(request,"md_template/edit_session_template.html",{"session_year":session_year})
+
 
 
 def department_feedback_message(request):
@@ -459,6 +476,13 @@ def department_feedback_message_replied(request):
 
 def department_comments(request):
     comments=Comment.objects.filter(reply=None).order_by('-id')
+    notification=Comment.objects.filter(reply=None,status=1).count()
+    comment_q=Comment.objects.all()
+    for commentss in comment_q:
+        if commentss.status == 1:
+            commentss.status=0
+            commentss.save()
+
 
     if request.method=='POST':
         content=request.POST.get("content")
@@ -467,17 +491,18 @@ def department_comments(request):
         if reply_id:
             comment_qs=Comment.objects.get(id=reply_id)
 
-        comment=Comment.objects.create(content=content,reply=comment_qs)
+        comment=Comment.objects.create(content=content,reply=comment_qs,status=2)
         comment.save()
         return redirect('/department_comments')
 
     
-    return render(request,"md_template/department_comments.html",{"comments":comments})
+    return render(request,"md_template/department_comments.html",{"comments":comments,"notification":notification})
 
 
 def employee_leave_view(request):
     leaves=LeaveReportEmployee.objects.all()
-    return render(request,"md_template/employee_leave_view.html",{"leaves":leaves})
+    notification=Comment.objects.filter(reply=None,status=1).count()
+    return render(request,"md_template/employee_leave_view.html",{"leaves":leaves,"notification":notification})
 
 
 def employee_approve_leave(request,leave_id):
@@ -496,8 +521,9 @@ def employee_disapproved_leave(request,leave_id):
 
 def admin_view_attendance(request):
     projects=Projects.objects.all()
+    notification=Comment.objects.filter(reply=None,status=1).count()
     session_year_id=SessionYearModel.objects.all()
-    return render(request,"md_template/admin_view_attendance.html",{"projects":projects,"session_year_id":session_year_id})
+    return render(request,"md_template/admin_view_attendance.html",{"projects":projects,"session_year_id":session_year_id,"notification":notification})
 
 
 
@@ -569,6 +595,12 @@ def delete_project(request,projects_id):
     project=Projects.objects.get(id=projects_id)
     project.delete()
     return redirect("manage_project")
+
+
+def delete_session(request,session_year_id):
+    session_year=SessionYearModel.objects.get(id=session_year_id)
+    session_year.delete()
+    return redirect("manage_session")
 
 
 def admin_profile(request):

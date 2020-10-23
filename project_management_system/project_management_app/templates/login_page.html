@@ -53,14 +53,6 @@
           <div class="g-recaptcha" data-sitekey="6LctodEZAAAAAEBdkZh6cstlJJwBwB0tPHMBHXsJ"></div>
         </div>
         <div class="row">
-          <!-- <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Remember Me
-              </label>
-            </div>
-          </div> -->
           <!-- /.col -->
           <div class="col-12">
             <button type="submit" class="btn btn-primary btn-block">Sign In</button>
@@ -145,14 +137,13 @@
     }
   }
 function email_Verify(){
-  if(email.value.length>8){
+  if(email){
       email.style.border = "1px solid silver";
       email_error.style.display = "none";
       return true;
   }
 }
 function pass_Verify(){
-  console.log(password.value.length+1)
   if(password){
       password.style.border = "1px solid silver";
       pass_error.style.display = "none";

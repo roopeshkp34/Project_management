@@ -45,6 +45,11 @@
     <!-- Right navbar links -->
     <h4 style="margin-left: 10px;margin-top:5px;">Project Center Management System Department Login</h4>
     <ul class="navbar-nav ml-auto">
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <a  href="{% url 'department_comment_sent' %}"    class="fas fa-globe" >
+          <span class="fa fa-comment" ></span>
+          <span class="num" id="num">{{ notification }}</span>
+        </a>
       <!-- Messages Dropdown Menu -->
       <li class="nav-item">
         <a class="nav-link"  href="{% url 'logout_user' %}" role="button">
@@ -120,7 +125,28 @@
 <script src="{% static 'dist/js/pages/dashboard.js' %}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{% static 'dist/js/demo.js' %}"></script>
-
+<style>
+  a.fa-globe {
+  position: relative;
+  font-size: 2em;
+  color: grey;
+  cursor: pointer;
+}
+span.fa-comment {
+  position: absolute;
+  font-size: 0.6em;
+  top: -4px;
+  color: red;
+  right: -4px;
+}
+span.num {
+  position: absolute;
+  font-size: 0.3em;
+  top: 1px;
+  color: #fff;
+  right: 2px;
+}
+</style>
 {% block custom_js %}
 {% endblock custom_js %}
 </body>

@@ -45,6 +45,8 @@ urlpatterns = [
 
     path('manage_session',MdViews.manage_session,name="manage_session"),
     path('add_session_save',MdViews.add_session_save,name="add_session_save"),
+    path('edit_session/<str:session_year_id>',MdViews.edit_session,name="edit_session"),
+
 
     path('manage_employee',MdViews.manage_employee,name="manage_employee"),
     path('manage_employee_sort/<str:name>',MdViews.manage_employee_sort,name="manage_employee_sort"),
@@ -65,6 +67,8 @@ urlpatterns = [
     path('department_comments',MdViews.department_comments,name="department_comments"),
 
 
+
+
     path('employee_leave_view',MdViews.employee_leave_view,name="employee_leave_view"),
     path('employee_approve_leave/<str:leave_id>',MdViews.employee_approve_leave,name="employee_approve_leave"),
     path('employee_disapproved_leave/<str:leave_id>',MdViews.employee_disapproved_leave,name="employee_disapproved_leave"),
@@ -78,6 +82,8 @@ urlpatterns = [
     path('delete_employee/<employee_id>',MdViews.delete_employee,name="delete_employee"),
     path('delete_departmentname/<departmentname_id>',MdViews.delete_departmentname,name="delete_departmentname"),
     path('delete_project/<projects_id>',MdViews.delete_project,name="delete_project"),
+    path('delete_session/<session_year_id>',MdViews.delete_session,name="delete_session"),
+
 
     path('admin_profile',MdViews.admin_profile,name="admin_profile"),
     path('admin_profile_save',MdViews.admin_profile_save,name="admin_profile_save"),

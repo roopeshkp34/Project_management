@@ -11,6 +11,9 @@ from django.db.models import Count
 
 def department_home(request):
     #fetch all employees
+    notification=Comment.objects.filter(status=2).count()
+
+
     employee_obj=Employee.objects.get(admin=request.user.id)
     departmentname=DepartmentName.objects.get(id=employee_obj.departmentname_id.id)
     projects=Projects.objects.filter(departmentname_id=departmentname)
@@ -64,7 +67,8 @@ def department_home(request):
         "attendance_list":attendance_list,
         "employee_list":employee_list,
         "present_list":employee_list_attendance_present,
-        "absent_list":employee_list_attendance_absent
+        "absent_list":employee_list_attendance_absent,
+        "notification":notification,
     }
 
     
@@ -81,7 +85,9 @@ def department_take_attendance(request):
     today=date.today()
     d1 = today.strftime("%d/%m/%Y")
     print(d1)
-    return render(request,"department_template/department_take_attendance.html",{"projects":projects,"session_year":session_year,"d1":d1})
+    notification=Comment.objects.filter(status=2).count()
+
+    return render(request,"department_template/department_take_attendance.html",{"notification":notification,"projects":projects,"session_year":session_year,"d1":d1})
 
 
 @csrf_exempt
@@ -125,11 +131,13 @@ def save_attendance_data(request):
 
 
 def department_update_attendance(request):
+    notification=Comment.objects.filter(status=2).count()
+
     employee=Employee.objects.get(admin=request.user.id)
     departmentname=employee.departmentname_id
     projects=Projects.objects.filter(departmentname_id=departmentname)
     session_year_id=SessionYearModel.objects.all()
-    return render(request,"department_template/department_update_attendance.html",{"projects":projects,"session_year_id":session_year_id})
+    return render(request,"department_template/department_update_attendance.html",{"notification":notification,"projects":projects,"session_year_id":session_year_id})
 
 
 @csrf_exempt
@@ -185,9 +193,10 @@ def save_updateattendance_data(request):
 
 
 def department_apply_leave(request):
+    notification=Comment.objects.filter(status=2).count()
     department_obj=Employee.objects.get(admin=request.user.id)
     leave_date=LeaveReportEmployee.objects.filter(employee_id=department_obj)
-    return render(request,"department_template/department_apply_leave.html",{"leave_date":leave_date})
+    return render(request,"department_template/department_apply_leave.html",{"notification":notification,"leave_date":leave_date})
 
 
 
@@ -241,6 +250,13 @@ def department_comment_sent(request):
     comments=Comment.objects.filter(employee_id=department_id,reply=None).order_by('-id')
     department_obj=Employee.objects.get(admin=request.user.id)
 
+    notification=Comment.objects.filter(status=2).count()
+    comment_q=Comment.objects.all()
+    for commentss in comment_q:
+        if commentss.status == 2:
+            commentss.status=0
+            commentss.save()
+
     if request.method=='POST':
         content=request.POST.get("content")
         reply_id=request.POST.get("comment_id")
@@ -248,18 +264,19 @@ def department_comment_sent(request):
         if reply_id:
             comment_qs=Comment.objects.get(id=reply_id)
         try:
-            comment=Comment.objects.create(content=content,employee_id=department_obj,reply=comment_qs)
+            comment=Comment.objects.create(content=content,employee_id=department_obj,reply=comment_qs,status=1)
             comment.save()
             return redirect('/department_comment_sent')
         except:
             return redirect('/department_comment_sent')
 
     
-    return render(request,"department_template/department_comments.html",{"comments":comments})
+    return render(request,"department_template/department_comments.html",{"comments":comments,"notification":notification})
 
 
 
 def admin_view_project(request):
+    notification=Comment.objects.filter(status=2).count()
     employee=Employee.objects.get(admin=request.user.id)
     departmentname=employee.departmentname_id
     project=Projects.objects.filter(departmentname_id=departmentname)
@@ -270,6 +287,7 @@ def admin_view_project(request):
     context = {
         "project": project,
         "list":list,
+        "notification":notification,
         
     }
     
@@ -278,11 +296,12 @@ def admin_view_project(request):
 
 
 def employee_add_project(request):
+    notification=Comment.objects.filter(status=2).count()
     employee=Employee.objects.get(admin=request.user.id)
     departmentname=employee.departmentname_id
     projects=Projects.objects.filter(departmentname_id=departmentname)
     session_year=SessionYearModel.objects.all()
-    return render(request,"department_template/add_project_template.html",{"projects":projects,"session_year":session_year})  
+    return render(request,"department_template/add_project_template.html",{"notification":notification,"projects":projects,"session_year":session_year})  
 
 
 
@@ -325,9 +344,10 @@ def save_employee_project(request):
 
 
 def department_view_project(request):
+    notification=Comment.objects.filter(status=2).count()
     employee_project=EmployeeProjectImages.objects.all()
     list=[]
-    return render(request,"department_template/view_project_history.html",{"employee_project":employee_project})
+    return render(request,"department_template/view_project_history.html",{"notification":notification,"employee_project":employee_project})
     
 
 

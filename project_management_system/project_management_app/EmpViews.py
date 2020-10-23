@@ -6,6 +6,9 @@ import datetime
 
 
 def employee_home(request):
+    notification=Comment.objects.filter(status=2).count()
+    print(notification)
+
     employee_obj=Employee.objects.get(admin=request.user.id)
     attendance_total=AttendenceReport.objects.filter(employee_id=employee_obj).count()
     attendance_present=AttendenceReport.objects.filter(employee_id=employee_obj,status=True).count()
@@ -24,15 +27,17 @@ def employee_home(request):
         project_name.append(project.project_name)
         data_present.append(attendance_present_count)
         data_absent.append(attendance_absent_count)
-    return render(request,"employee_template/employee_home_template.html",{"total_attendance":attendance_total,"absent_attendance":attendance_absent,"present_attendance":attendance_present,"total_project":total_project,"data_name":project_name,"data1":data_present,"data2":data_absent})
+    return render(request,"employee_template/employee_home_template.html",{"notification":notification,"total_attendance":attendance_total,"absent_attendance":attendance_absent,"present_attendance":attendance_present,"total_project":total_project,"data_name":project_name,"data1":data_present,"data2":data_absent})
 
 
 
 
 def employee_apply_leave(request):
+    notification=Comment.objects.filter(status=2).count()
+
     employee_obj=Employee.objects.get(admin=request.user.id)
     leave_date=LeaveReportEmployee.objects.filter(employee_id=employee_obj)
-    return render(request,"employee_template/employee_apply_leave.html",{"leave_date":leave_date})
+    return render(request,"employee_template/employee_apply_leave.html",{"notification":notification,"leave_date":leave_date})
 
 
 def employee_apply_leave_save(request):
@@ -84,6 +89,13 @@ def employee_comments(request):
     comments=Comment.objects.filter(employee_id=department_id,reply=None).order_by('-id')
     department_obj=Employee.objects.get(admin=request.user.id)
 
+    notification=Comment.objects.filter(status=2,employee_id=department_id).count()
+    comment_q=Comment.objects.all()
+    for commentss in comment_q:
+        if commentss.status == 2:
+            commentss.status=0
+            commentss.save()
+
     if request.method=='POST':
         content=request.POST.get("content")
         reply_id=request.POST.get("comment_id")
@@ -91,21 +103,23 @@ def employee_comments(request):
         if reply_id:
             comment_qs=Comment.objects.get(id=reply_id)
         try:
-            comment=Comment.objects.create(content=content,employee_id=department_obj,reply=comment_qs)
+            comment=Comment.objects.create(content=content,employee_id=department_obj,reply=comment_qs,status=1)
             comment.save()
             return redirect('/employee_comments')
         except:
             return redirect('/employee_comments')
 
     
-    return render(request,"employee_template/employee_comments.html",{"comments":comments})
+    return render(request,"employee_template/employee_comments.html",{"notification":notification,"comments":comments})
 
 
 def employee_view_attendence(request):
+    notification=Comment.objects.filter(status=2).count()
+
     employee=Employee.objects.get(admin=request.user.id)
     departmentname=employee.departmentname_id
     projects=Projects.objects.filter(departmentname_id=departmentname)
-    return render(request,"employee_template/employee_view_attendance.html",{"projects":projects})
+    return render(request,"employee_template/employee_view_attendance.html",{"notification":notification,"projects":projects})
 
 
 
@@ -156,13 +170,15 @@ def employee_profile_save(request):
 
 
 def employee_view_project(request):
+    notification=Comment.objects.filter(status=2).count()
+
     employees=Employee.objects.get(admin=request.user.id)
     project=EmployeeProject.objects.filter(employee_id=employees.id)
     list=[]
     for projec in project:
         project_fil=EmployeeProjectImages.objects.filter(empproject_id=projec)
         list.append(project_fil)
-    return render(request,"employee_template/employee_project_view.html",{"project":project,"list":list})
+    return render(request,"employee_template/employee_project_view.html",{"notification":notification,"project":project,"list":list})
 
 
 
