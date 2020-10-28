@@ -418,7 +418,7 @@ def edit_project(request,project_id):
     departmentname=DepartmentName.objects.all()
     department=Employee.objects.filter(category='Hod')
     project=Projects.objects.get(id=project_id)
-    return render(request,"md_template/edit_project_template.html",{"project":project,"departmentname":departmentname,"department":department,"id":project_id})
+    return render(request,"md_template/md_edit_project.html",{"project":project,"departmentname":departmentname,"department":department,"id":project_id})
 
 
 
@@ -432,6 +432,8 @@ def edit_project_save(request):
         project_details=request.POST.get("project_details")
         department_id=request.POST.get("department")
         departmentname_id=request.POST.get("department_name")
+        images=request.FILES.getlist("file[]")
+
         try:
             project=Projects.objects.get(id=project_id)
             project.project_name=project_name
@@ -441,6 +443,11 @@ def edit_project_save(request):
             departmentname=DepartmentName.objects.get(id=departmentname_id)
             project.departmentname_id=departmentname
             project.save()
+            for img in images:
+                fs=FileSystemStorage()
+                file_path=fs.save(img.name,img)
+                pimage=ProjectImages(project_id=project,image=file_path)
+                pimage.save()
             messages.success(request, "Project Edited Successfully!")
             return redirect('/edit_project/'+project_id)
         except:
@@ -451,6 +458,28 @@ def edit_session(request,session_year_id):
     session_year=SessionYearModel.objects.get(id=session_year_id)
     print(session_year)
     return render(request,"md_template/edit_session_template.html",{"session_year":session_year})
+
+def save_edit_session(request):
+    if request.method!='POST':
+        messages.error(request, "Invalid Method ")
+        return redirect('edit_session')
+    else:
+        session_id=request.POST.get("session_year_id")
+        session_start=request.POST.get("session_start")
+        session_end=request.POST.get("session_end")
+        try:
+            session_year_id=SessionYearModel.objects.get(id=session_id)
+            session_year_id.session_start_year=session_start
+            session_year_id.session_end_year=session_end
+            session_year_id.save()
+            messages.success(request, "Session Edited Successfully!")
+            return redirect('/manage_session')
+
+        except:
+            messages.error(request, "Failed to Edit Session!")
+            return redirect('/manage_session')
+
+
 
 
 
@@ -580,9 +609,13 @@ def check_username_exist(request):
 
 
 def delete_employee(request,employee_id):
-    employee=Employee.objects.get(admin=employee_id)
-    employee.delete()
-    return redirect("manage_employee")
+    try:
+        employee=Employee.objects.get(admin=employee_id)
+        employee.delete()
+        return redirect("manage_employee")
+    except:
+        messages.error(request, "Failed to Remove the Employee!,Please hand over the project ")
+        return redirect('/manage_employee')
 
 
 def delete_departmentname(request,departmentname_id):

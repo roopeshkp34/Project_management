@@ -68,7 +68,7 @@ Add Session
                       <a href="{% url 'edit_session' row.id %}" class="btn btn-success">Edit</a>
                       <form action="{% url 'delete_session' row.id %}" method="POST" onsubmit="window.ondelete()" style="display: inline;">
                         {% csrf_token %}
-                      <button type="submit" class="btn btn-danger">Delete</button>
+                      <!-- <button type="submit" class="btn btn-danger">Delete</button> -->
                       </form>
                     </td>
                   </tr>

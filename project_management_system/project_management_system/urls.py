@@ -44,8 +44,11 @@ urlpatterns = [
     
 
     path('manage_session',MdViews.manage_session,name="manage_session"),
+    
     path('add_session_save',MdViews.add_session_save,name="add_session_save"),
     path('edit_session/<str:session_year_id>',MdViews.edit_session,name="edit_session"),
+    path('save_edit_session',MdViews.save_edit_session,name="save_edit_session"),
+
 
 
     path('manage_employee',MdViews.manage_employee,name="manage_employee"),
